@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="508px" height="508px" viewBox="0 0 508 508" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12072) - http://www.bohemiancoding.com/sketch -->
+    <title>Logo</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="19.9114743%" y1="19.7570025%" x2="90.5372624%" y2="90.7451491%" id="linearGradient-1">
+            <stop stop-color="#E6BF7F" offset="0%"></stop>
+            <stop stop-color="#B39F7F" offset="26.03%"></stop>
+            <stop stop-color="#3C617B" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Logo" sketch:type="MSLayerGroup" transform="translate(-30.000000, 0.000000)">
+            <circle id="Oval" fill="url(#linearGradient-1)" sketch:type="MSShapeGroup" cx="283.81" cy="253.975" r="253.768"></circle>
+            <text id="GET-IT-DONE" fill="#000000" sketch:type="MSTextLayer" transform="translate(301.709767, 241.001053) rotate(-47.702078) translate(-301.709767, -241.001053) " font-family="Avenir Next" font-size="50" font-weight="bold">
+                <tspan x="118.193185" y="257.001053">GET IT DONE</tspan>
+            </text>
+            <g id="Group" transform="translate(0.000000, 47.000000)" sketch:type="MSShapeGroup">
+                <g transform="translate(67.000000, 20.000000)" id="Shape">
+                    <path d="M333.058,262.347 L35.633,262.347"></path>
+                    <path d="M35.633,262.347 L0.512,262.347"></path>
+                    <path d="M304.834,0.54 C376.89,31.732 427.31,103.46 427.31,186.976 C427.31,299.128 336.391,390.046 224.239,390.046 C138.721,390.046 65.565,337.177 35.635,262.347" stroke="#060808" stroke-width="2"></path>
+                    <path d="M32.764,254.74 C33.67,257.301 34.629,259.836 35.633,262.345"></path>
+                </g>
+                <g transform="translate(78.000000, 3.000000)" id="Shape">
+                    <path d="M15.277,158.599 L0.494,158.599"></path>
+                    <path d="M641.913,158.598 L15.277,158.599"></path>
+                    <path d="M280.335,12.265 C259.328,4.913 236.754,0.904 213.237,0.904 C116.684,0.904 35.888,68.294 15.276,158.599" stroke="#000000" stroke-width="2"></path>
+                </g>
+                <path d="M358.335,15.265 C362.91,16.868 367.414,18.626 371.834,20.54" id="Shape" stroke="#060808" stroke-width="2"></path>
+                <path d="M89.427,184.355 C88.603,191.783 88.166,199.328 88.166,206.974 C88.166,230.74 92.262,253.544 99.764,274.74" id="Shape"></path>
+                <path d="M371.834,20.54 L371.834,93.081 L157.99,327.568 L99.764,274.74" id="Shape"></path>
+                <path d="M89.427,184.355 L0.144,184.355 L99.764,274.74" id="Shape"></path>
+                <path d="M89.427,184.355 L96.196,184.355 L153.755,237.804 L358.335,15.265" id="Shape"></path>
+                <path d="M371.834,20.54 L371.834,0.579 L358.335,15.265" id="Shape"></path>
+            </g>
+            <path d="M40.81,247.054 L90.031,247.054 L154.635,307.044 L356.136,87.852 L356.136,133.997 L156.942,352.419 L40.81,247.054 Z" id="Shape" fill="#060808" sketch:type="MSShapeGroup"></path>
+            <path d="M67.512,248.207 L156.942,329.347 L356.136,110.924 L356.136,87.852 L154.635,307.044 L90.031,247.054 L67.512,248.207 Z" id="Shape" fill="#312D32" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,50 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2016-sep-19, 16:15:23
+    Author     : ziinloader
+*/
+
+body {
+    text-align: center;
+}
+
+.prod-images {
+    display: block;
+}
+.prod-images .prod-img {
+    width: 100px;
+    height: 100px;
+    background: #fdfdfd;
+    border: 1px dashed #d4d4d4;
+    display: block;
+    border-radius: 3px;
+    float: left;
+    margin-right: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.prod-images .prod-img:hover {
+    border: 1px dashed gray;
+}
+
+.prod-images .prod-img input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100px;
+    height: 100px;
+    opacity: 0.01;
+    cursor: pointer;
+}
+
+.prod-images .prod-img .prod-text {
+    text-align: center;
+    padding-top: 35px;
+    opacity: 0.5;
+}
