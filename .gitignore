@@ -6,3 +6,4 @@
 # stop folders from uploading #
 web/uploads/
 web/uploads/thumbnail/
+logs/
