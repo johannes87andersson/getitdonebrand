@@ -1,2 +1,2 @@
 # getitdonebrand
-GetItDoneBrand site
+Full backup of GetItDoneBrand´s web page.
