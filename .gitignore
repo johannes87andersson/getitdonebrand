@@ -1,0 +1,8 @@
+# Stop files from upload to server #
+*.mp3
+*.mp4
+*.mpeg
+
+# stop folders from uploading #
+web/uploads/
+web/uploads/thumbnail/

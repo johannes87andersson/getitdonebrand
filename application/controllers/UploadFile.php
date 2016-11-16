@@ -146,72 +146,50 @@ class UploadFile extends Base {
         if (in_array($type, $accepted)) {
             // we have an allowed uploaded file
             $root = $_SERVER["DOCUMENT_ROOT"];
-            if(move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $_FILES["file"]["name"])) {
-                if($type != "svg+xml") {
-                    $this->generate_image_thumbnail($root . "/web/uploads/" . $_FILES["file"]["name"], $root . "/web/uploads/thumbnail/" . $_FILES["file"]["name"]); //call the function
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $_FILES["file"]["name"])) {
+                if ($type != "svg+xml") {
+                    $imgFile = $root . "/web/uploads/" . $_FILES["file"]["name"];
+                    $imgThumb = $root . "/web/uploads/thumbnail/" . $_FILES["file"]["name"];
+                    $this->createThumbnail($imgFile, $imgThumb);
                     echo "/web/uploads/thumbnail/" . $_FILES["file"]["name"];
                 } else {
                     echo "/web/uploads/" . $_FILES["file"]["name"];
                 }
-                
-            }  
+            }
         } else {
             echo "Not accepted type";
         }
-
-//        [name] => Skärmavbild 2016-11-14 kl. 21.18.36.png
-//        [type] => image/png
-//        [tmp_name] => /Applications/XAMPP/xamppfiles/temp/phpF6MDHw
-//        [error] => 0
-//        [size] => 279824
     }
 
-    
-    private function generate_image_thumbnail($source_image_path, $thumbnail_image_path) {
-        define('THUMBNAIL_IMAGE_MAX_WIDTH', 100);
-        define('THUMBNAIL_IMAGE_MAX_HEIGHT', 100);
-        list($source_image_width, $source_image_height, $source_image_type) = getimagesize($source_image_path);
-        switch ($source_image_type) {
-            case IMAGETYPE_GIF:
-                $source_gd_image = imagecreatefromgif($source_image_path);
-                break;
-            case IMAGETYPE_JPEG:
-                $source_gd_image = imagecreatefromjpeg($source_image_path);
-                break;
-            case IMAGETYPE_PNG:
-                $source_gd_image = imagecreatefrompng($source_image_path);
-                break;
-        }
-        if ($source_gd_image === false) {
-            return false;
-        }
-        $source_aspect_ratio = $source_image_width / $source_image_height;
-        $thumbnail_aspect_ratio = THUMBNAIL_IMAGE_MAX_WIDTH / THUMBNAIL_IMAGE_MAX_HEIGHT;
-        if ($source_image_width <= THUMBNAIL_IMAGE_MAX_WIDTH && $source_image_height <= THUMBNAIL_IMAGE_MAX_HEIGHT) {
-            $thumbnail_image_width = $source_image_width;
-            $thumbnail_image_height = $source_image_height;
-        } elseif ($thumbnail_aspect_ratio > $source_aspect_ratio) {
-            $thumbnail_image_width = (int) (THUMBNAIL_IMAGE_MAX_HEIGHT * $source_aspect_ratio);
-            $thumbnail_image_height = THUMBNAIL_IMAGE_MAX_HEIGHT;
-        } else {
-            $thumbnail_image_width = THUMBNAIL_IMAGE_MAX_WIDTH;
-            $thumbnail_image_height = (int) (THUMBNAIL_IMAGE_MAX_WIDTH / $source_aspect_ratio);
-        }
-        $thumbnail_gd_image = imagecreatetruecolor($thumbnail_image_width, $thumbnail_image_height);
-        imagecopyresampled($thumbnail_gd_image, $source_gd_image, 0, 0, 0, 0, $thumbnail_image_width, $thumbnail_image_height, $source_image_width, $source_image_height);
+    private function createThumbnail($image, $thumbnail) {
+        $metaData = getimagesize($image);
+        $img = '';
+        $newWidth = 100;
+        $newHeight = $metaData[1] / ($metaData[0] / $newWidth);
 
-        $img_disp = imagecreatetruecolor(THUMBNAIL_IMAGE_MAX_WIDTH, THUMBNAIL_IMAGE_MAX_WIDTH);
-        $backcolor = imagecolorallocate($img_disp, 0, 0, 0);
-        imagefill($img_disp, 0, 0, $backcolor);
-        //imagecolortransparent($img_disp, $backcolor);
-        
-        imagecopy($img_disp, $thumbnail_gd_image, (imagesx($img_disp) / 2) - (imagesx($thumbnail_gd_image) / 2), (imagesy($img_disp) / 2) - (imagesy($thumbnail_gd_image) / 2), 0, 0, imagesx($thumbnail_gd_image), imagesy($thumbnail_gd_image));
+        switch ($metaData["mime"]) {
+            case 'image/jpeg':
+                $img = imagecreatefromjpeg($image);
+                break;
+            case 'image/png':
+                $img = imagecreatefrompng($image);
+                break;
+            case 'image/gif':
+                $img = imagecreatefromgif($image);
+                break;
+            case 'image/wbmp':
+                $img = imagecreatefromwbmp($image);
+                break;
+        }
 
-        imagepng($img_disp, $thumbnail_image_path, 9);
-        imagedestroy($source_gd_image);
-        imagedestroy($thumbnail_gd_image);
-        imagedestroy($img_disp);
-        return true;
+        if ($img) {
+            $imgThumb = imagecreatetruecolor($newWidth, $newHeight);
+            imagealphablending($imgThumb, false);
+            imagesavealpha($imgThumb, true);
+            imagecopyresampled($imgThumb, $img, 0, 0, 0, 0, $newWidth, $newHeight, $metaData[0], $metaData[1]);
+            imagepng($imgThumb, $thumbnail, 9);
+            imagedestroy($imgThumb);
+        }
     }
 
     private function resizeImage($file) {
