@@ -157,7 +157,10 @@ $(document).ready(function () {
             success: completeHandler = function (data) {
                 console.log(data);
                 
-                that.parent().html('<img src="' + data + '" />');
+                that.parent().html('<img src="/web/uploads/thumbnail/' + data + '" />');
+                
+                var parent_id = $(".load_product").attr("id");
+                Products.addFileToDb(parent_id, data);
 
             },
             error: errorHandler = function (error) {

@@ -141,20 +141,18 @@ class UploadFile extends Base {
     }
 
     public function ProductUpload() {
+        $this->load->model("UploadFileModel");
         $accepted = array("png", "jpg", "jpeg", "gif", "svg+xml");
         $type = preg_replace("/(^\w+[\/])/", "", $_FILES["file"]["type"]);
         if (in_array($type, $accepted)) {
             // we have an allowed uploaded file
             $root = $_SERVER["DOCUMENT_ROOT"];
-            if (move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $_FILES["file"]["name"])) {
-                if ($type != "svg+xml") {
-                    $imgFile = $root . "/web/uploads/" . $_FILES["file"]["name"];
-                    $imgThumb = $root . "/web/uploads/thumbnail/" . $_FILES["file"]["name"];
-                    $this->createThumbnail($imgFile, $imgThumb);
-                    echo "/web/uploads/thumbnail/" . $_FILES["file"]["name"];
-                } else {
-                    echo "/web/uploads/" . $_FILES["file"]["name"];
-                }
+            $newName = time() . ".".$type;
+            if (move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $newName)) {
+                $imgFile = $root . "/web/uploads/" . $newName;
+                $imgThumb = $root . "/web/uploads/thumbnail/" . $newName;
+                $this->createThumbnail($imgFile, $imgThumb);
+                echo $newName;
             }
         } else {
             echo "Not accepted type";
@@ -189,6 +187,20 @@ class UploadFile extends Base {
             imagecopyresampled($imgThumb, $img, 0, 0, 0, 0, $newWidth, $newHeight, $metaData[0], $metaData[1]);
             imagepng($imgThumb, $thumbnail, 9);
             imagedestroy($imgThumb);
+        }
+    }
+
+    public function InsertImage() {
+        $this->load->model("UploadFileModel");
+
+        $filename = filter_input(INPUT_POST, "filename", FILTER_SANITIZE_STRING);
+        $parent_id = filter_input(INPUT_POST, "parent_id", FILTER_SANITIZE_NUMBER_INT);
+
+        $injectImage = $this->UploadFileModel->doInsertImage($parent_id, $filename);
+        if ($injectImage) {
+            echo json_encode("true");
+        } else {
+            echo json_encode("false");
         }
     }
 
