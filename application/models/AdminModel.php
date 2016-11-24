@@ -65,5 +65,12 @@ class AdminModel extends BaseModel {
         $res = $q->result_array();
         return (count($res) > 0) ? $res[0] : false;
     }
+    
+    public function getCurrentProductsImages($parent_id) {
+        $sql = "SELECT * FROM prod_img WHERE parent_id = ?";
+        $q = $this->db->query($sql, array($parent_id));
+        $res = $q->result_array();
+        return (count($res) > 0) ? $res : false;
+    }
 
 }

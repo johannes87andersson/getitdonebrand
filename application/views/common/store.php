@@ -5,10 +5,10 @@
             <img width="100%" class="img img-thumbnail thumb" src="/web/images/dejan-img.jpg" />
             <img width="100%" class="img img-thumbnail thumb" src="/web/images/getitdone-logo.png" />
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <img width="100%" class="img img-thumbnail show-me" src="https://scontent-ams3-1.cdninstagram.com/t51.2885-15/e35/14073183_1897496630477880_224383324_n.jpg?ig_cache_key=MTMyNzQ3NzUzMjcyNzQxNjgxMw%3D%3D.2" />
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <?php echo $product["shopify_link"];?>
         </div>
         <div class="clearfix"></div>

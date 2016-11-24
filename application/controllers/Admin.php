@@ -91,6 +91,17 @@ class Admin extends Base {
         }
     }
 
+    public function getCurrentProductsImages() {
+        $parent_id = filter_input(INPUT_GET, "parent_id", FILTER_SANITIZE_NUMBER_INT);
+
+        $this->vars["product_images"] = $this->AdminModel->getCurrentProductsImages($parent_id);
+        if ($this->vars["product_images"]) {
+            echo json_encode($this->vars["product_images"]);
+        } else {
+            echo json_encode("false");
+        }
+    }
+
     public function currentPage() {
         $page_id = filter_input(INPUT_GET, "page_id", FILTER_SANITIZE_NUMBER_INT);
 

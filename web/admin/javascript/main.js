@@ -63,7 +63,8 @@ $(document).ready(function () {
             Pages.loadPageResult(data);
         });
     });
-
+    
+    // auto load first value
     switch (document.location.pathname) {
         case "/admin/pages":
             $.get("/admin/currentPage", {page_id: 1}, function (data) {
@@ -74,6 +75,9 @@ $(document).ready(function () {
             $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
                 //Pages.loadPageResult(data);
                 Products.loadProductResults(data);
+            });
+            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function(data) {
+                Products.loadProductImageResults(data);
             });
             break;
     }
@@ -136,42 +140,8 @@ $(document).ready(function () {
         }, 'json');
     });
 
-    $(".prod-img input[type=file]").on("change", function (e) {
-        e.preventDefault();
-        var that = $(this);
-        var formData = new FormData(document.querySelector("form"));
-
-        var name = this.files.item(0).name;
-        formData.append("file", this.files[0], name);
-
-        $.ajax({
-            url: "/uploadfile/ProductUpload",
-            type: "POST",
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', progressHandling, false);
-                }
-                return myXhr;
-            },
-            success: completeHandler = function (data) {
-                console.log(data);
-                
-                that.parent().html('<img src="/web/uploads/thumbnail/' + data + '" />');
-                
-                var parent_id = $(".load_product").attr("id");
-                Products.addFileToDb(parent_id, data);
-
-            },
-            error: errorHandler = function (error) {
-                alert("Upload error message: " + error.statusText);
-            },
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            timeout: 60000
-        }, 'json');
+    $(document).on("change", ".prod-img input[type=file]", function (e) {
+        Products.uploadFile(e, this);
     });
 });
 

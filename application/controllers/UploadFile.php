@@ -12,7 +12,6 @@
  * @author ziinloader
  */
 require_once("Base.php");
-require_once("Images.php");
 
 class UploadFile extends Base {
 
@@ -140,13 +139,15 @@ class UploadFile extends Base {
         echo "</br>";
     }
 
-    public function ProductUpload() {
+    public function productUpload() {
+        //header('HTTP/1.1 200 OK', true, 200);
         $this->load->model("UploadFileModel");
         $accepted = array("png", "jpg", "jpeg", "gif", "svg+xml");
         $type = preg_replace("/(^\w+[\/])/", "", $_FILES["file"]["type"]);
         if (in_array($type, $accepted)) {
             // we have an allowed uploaded file
             $root = $_SERVER["DOCUMENT_ROOT"];
+            
             $newName = time() . ".".$type;
             if (move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $newName)) {
                 $imgFile = $root . "/web/uploads/" . $newName;
@@ -190,7 +191,7 @@ class UploadFile extends Base {
         }
     }
 
-    public function InsertImage() {
+    public function insertImage() {
         $this->load->model("UploadFileModel");
 
         $filename = filter_input(INPUT_POST, "filename", FILTER_SANITIZE_STRING);
