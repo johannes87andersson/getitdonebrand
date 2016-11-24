@@ -1,17 +1,7 @@
 $(document).ready(function () {
 
-    /*$("#login_form").on("submit", function (e) {
-     e.preventDefault();
-     
-     var username = $("#login_username").val();
-     var password = $("#login_password").val();
-     
-     $.post("/admin/doLogin", {do_login: true, login_username: username, login_password: password}, function (data) {
-     var val = JSON.parse(data);
-     console.log(val);
-     });
-     
-     });*/
+    var p = new Products();
+    var pages = new Pages();
 
     $(document).on("click", ".save-page-cred", function (e) {
         e.preventDefault();
@@ -60,7 +50,7 @@ $(document).ready(function () {
         var page_id = $(this).attr("load_page");
 
         $.get("/admin/currentPage", {page_id: page_id}, function (data) {
-            Pages.loadPageResult(data);
+            pages.loadPageResult(data);
         });
     });
     
@@ -68,16 +58,16 @@ $(document).ready(function () {
     switch (document.location.pathname) {
         case "/admin/pages":
             $.get("/admin/currentPage", {page_id: 1}, function (data) {
-                Pages.loadPageResult(data);
+                pages.loadPageResult(data);
             });
             break;
         case "/admin/products":
             $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
                 //Pages.loadPageResult(data);
-                Products.loadProductResults(data);
+                p.loadProductResults(data);
             });
             $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function(data) {
-                Products.loadProductImageResults(data);
+                p.loadProductImageResults(data);
             });
             break;
     }
@@ -89,7 +79,7 @@ $(document).ready(function () {
 
         $.get("/admin/currentProduct", {prod_id: prod_id}, function (data) {
             //Pages.loadPageResult(data);
-            Products.loadProductResults(data);
+            p.loadProductResults(data);
         });
     });
 
@@ -141,7 +131,7 @@ $(document).ready(function () {
     });
 
     $(document).on("change", ".prod-img input[type=file]", function (e) {
-        Products.uploadFile(e, this);
+        p.uploadFile(e, this);
     });
 });
 
