@@ -25,6 +25,7 @@ class Common extends Base {
         $prod_name = $this->uri->segment(3);
         
         $this->vars["product"] = $this->CommonModel->getSpecificProduct(null, $prod_name);
+        $this->vars["prod_img"] = $this->CommonModel->getCurrentProductsImages($this->vars["product"]["prod_id"]);
         
         $this->header();
         $this->load->view('common/store', $this->vars);

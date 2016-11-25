@@ -229,5 +229,18 @@ class UploadFile extends Base {
 
         imagepng($thumb);
     }
+    
+    public function removeImage() {
+        $this->load->model("UploadFileModel");
+
+        $file_id = filter_input(INPUT_POST, "file_id", FILTER_SANITIZE_NUMBER_INT);
+
+        $injectImage = $this->UploadFileModel->doRemoveImage($file_id);
+        if ($injectImage) {
+            echo json_encode("true");
+        } else {
+            echo json_encode("false");
+        }
+    }
 
 }

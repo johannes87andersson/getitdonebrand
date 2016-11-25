@@ -1,12 +1,13 @@
 <div class="container" style="position: relative;">
     <div class="row">
         <div class="col-md-1">
-            <img width="100%" class="img img-thumbnail thumb" src="https://scontent-ams3-1.cdninstagram.com/t51.2885-15/e35/14073183_1897496630477880_224383324_n.jpg?ig_cache_key=MTMyNzQ3NzUzMjcyNzQxNjgxMw%3D%3D.2" />
-            <img width="100%" class="img img-thumbnail thumb" src="/web/images/dejan-img.jpg" />
-            <img width="100%" class="img img-thumbnail thumb" src="/web/images/getitdone-logo.png" />
+            <?php for($i = 0; $i < count($prod_img); $i++) {?>
+                
+            <img width="100%" class="img img-thumbnail thumb" src="/web/uploads/thumbnail/<?php echo $prod_img[$i]["filename"]?>" />
+            <?php } ?>
         </div>
         <div class="col-md-7">
-            <img width="100%" class="img img-thumbnail show-me" src="https://scontent-ams3-1.cdninstagram.com/t51.2885-15/e35/14073183_1897496630477880_224383324_n.jpg?ig_cache_key=MTMyNzQ3NzUzMjcyNzQxNjgxMw%3D%3D.2" />
+            <img width="100%" class="img img-thumbnail show-me" src="/web/uploads/<?php echo $prod_img[0]["filename"]?>" />
         </div>
         <div class="col-md-4">
             <?php echo $product["shopify_link"];?>

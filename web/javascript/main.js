@@ -7,7 +7,9 @@ $(document).ready(function() {
         var that = $(this);
         setTimeout(function() {
             show_me.fadeIn(100);
+            //console.log(that.attr("src"));
             show_me.attr("src", that.attr("src"));
+            
         }, 100);
         
     });

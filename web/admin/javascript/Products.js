@@ -16,19 +16,20 @@ Products.prototype.loadProductImageResults = function (data) {
     var p = new Products();
     var arr = JSON.parse(data);
     var prod_box = $(".prod-images");
-    
+
     // always clean the images box first
     prod_box.html("");
-    
+
     // stop if dont find any value
-    if(arr === "false") {
+    if (arr === "false") {
         console.log("test stop");
         p.createNewProdImgBox(1);
         prod_box.append('<div class="clearfix"></div>');
         return;
     }
-    console.log(arr.length);
-    console.log($(".prod-img").length);
+
+    // console.log(arr.length);
+    // console.log($(".prod-img").length);
     var prod_img = $(".prod-img");
     if (prod_img.length < arr.length) {
         prod_box.find(".clearfix").remove();
@@ -43,6 +44,7 @@ Products.prototype.loadProductImageResults = function (data) {
         var currentPos = $("#file" + (i + 1));
         var currentPosBox = currentPos.parent();
         currentPosBox.children(".prod-text").remove();
+        currentPosBox.prepend('<div id="' + arr[i].img_id + '" class="del-img"><span class="glyphicon glyphicon-remove" title="Ta bort bild"></span></div>');
         currentPosBox.append('<img style="position: absolute; top: 0; left: 0;" prod-img-id="' + arr[i].img_id + '" src="/web/uploads/thumbnail/' + arr[i].filename + '" />');
     }
 };
@@ -95,6 +97,12 @@ Products.prototype.createNewProdImgBox = function (index) {
 };
 Products.prototype.addFileToDb = function (parent_id, filename) {
     $.post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
+        var json = JSON.parse(data);
+        console.log(json);
+    });
+};
+Products.prototype.removeFileFromDb = function(file_id) {
+    $.post("/UploadFile/removeImage", {file_id: file_id}, function(data) {
         var json = JSON.parse(data);
         console.log(json);
     });

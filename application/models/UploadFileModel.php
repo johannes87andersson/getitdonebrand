@@ -24,4 +24,10 @@ class UploadFileModel extends BaseModel {
         return ($this->db->affected_rows()) ? true : false;
     }
     
+    public function doRemoveImage($file_id) {
+        $sql = "DELETE FROM prod_img WHERE img_id = ?";
+        $q = $this->db->query($sql, array($file_id));
+        return ($this->db->affected_rows()) ? true : false;
+    }
+    
 }

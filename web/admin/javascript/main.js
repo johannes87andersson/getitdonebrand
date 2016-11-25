@@ -136,6 +136,15 @@ $(document).ready(function () {
     $(document).on("change", ".prod-img input[type=file]", function (e) {
         p.uploadFile(e, this);
     });
+    
+    $(document).on("click", ".del-img", function(e) {
+        e.preventDefault();
+        
+        var id = $(this).attr("id");
+        // remove image
+        p.removeFileFromDb(id);
+        $(this).parent().remove();
+    });
 });
 
 function progressHandling(e) {

@@ -33,6 +33,14 @@ body {
     border: 1px dashed gray;
 }
 
+.prod-images .prod-img .del-img {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 100;
+    color: red;
+}
+
 .prod-images .prod-img input[type=file] {
     position: absolute;
     top: 0;

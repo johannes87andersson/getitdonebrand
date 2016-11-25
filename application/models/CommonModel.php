@@ -27,7 +27,13 @@ class CommonModel extends BaseModel {
     }
 
     public function getAllProducts() {
-        $sql = "SELECT * FROM products";
+        //$sql = "SELECT * FROM products";
+        $sql = "
+            SELECT p.prod_id, p.prod_name, p.prod_active, img.img_id, img.filename, img.parent_id FROM `products` AS p
+            LEFT JOIN prod_img AS img ON 
+            img.parent_id = p.prod_id
+            GROUP BY p.prod_id
+            ";
         $q = $this->db->query($sql);
         $res = $q->result_array();
         return (count($res) > 0) ? $res : false;
@@ -38,6 +44,13 @@ class CommonModel extends BaseModel {
         $q = $this->db->query($sql, array($prod_id, $prod_name));
         $res = $q->result_array();
         return (count($res) > 0) ? $res[0] : false;
+    }
+    
+    public function getCurrentProductsImages($parent_id) {
+        $sql = "SELECT * FROM prod_img WHERE parent_id = ?";
+        $q = $this->db->query($sql, array($parent_id));
+        $res = $q->result_array();
+        return (count($res) > 0) ? $res : false;
     }
 
 }
