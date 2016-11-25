@@ -15,13 +15,25 @@ Products.prototype.loadProductResults = function (data) {
 Products.prototype.loadProductImageResults = function (data) {
     var p = new Products();
     var arr = JSON.parse(data);
+    var prod_box = $(".prod-images");
+    
+    // always clean the images box first
+    prod_box.html("");
+    
+    // stop if dont find any value
+    if(arr === "false") {
+        console.log("test stop");
+        p.createNewProdImgBox(1);
+        prod_box.append('<div class="clearfix"></div>');
+        return;
+    }
+    console.log(arr.length);
+    console.log($(".prod-img").length);
     var prod_img = $(".prod-img");
     if (prod_img.length < arr.length) {
-        var prod_box = $(".prod-images");
-        $(".prod-images").find(".clearfix").remove();
+        prod_box.find(".clearfix").remove();
         for (var i = prod_img.length; i < arr.length; i++) {
-
-            p.createNewProdImgBox((i + 1), "noname");
+            p.createNewProdImgBox((i + 1));
         }
         p.createNewProdImgBox(arr.length + 1);
         prod_box.append('<div class="clearfix"></div>');
@@ -56,7 +68,7 @@ Products.prototype.uploadFile = function (e, object) {
 
             that.parent().html('<img src="/web/uploads/thumbnail/' + data + '" />');
 
-            var parent_id = $(".load_product").attr("id");
+            var parent_id = $(".save-product-cred").attr("id");
             var p = new Products();
             p.addFileToDb(parent_id, data);
 

@@ -53,12 +53,12 @@ $(document).ready(function () {
             pages.loadPageResult(data);
         });
     });
-    
+
     // auto load first value
     switch (document.location.pathname) {
         case "/admin/pages":
             $.get("/admin/currentPage", {page_id: 1}, function (data) {
-                pages.loadPageResult(data);
+                p.loadPageResult(data);
             });
             break;
         case "/admin/products":
@@ -66,7 +66,7 @@ $(document).ready(function () {
                 //Pages.loadPageResult(data);
                 p.loadProductResults(data);
             });
-            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function(data) {
+            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function (data) {
                 p.loadProductImageResults(data);
             });
             break;
@@ -80,6 +80,9 @@ $(document).ready(function () {
         $.get("/admin/currentProduct", {prod_id: prod_id}, function (data) {
             //Pages.loadPageResult(data);
             p.loadProductResults(data);
+        });
+        $.get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function (data) {
+            p.loadProductImageResults(data);
         });
     });
 
