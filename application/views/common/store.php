@@ -17,7 +17,7 @@
         <div class="col-md-1">
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
             <table class="table table-hover">
                 <tr class="text-center">
                     <th class="text-center" width="33.3%">Size</th>
@@ -36,7 +36,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <p class="text">
                 
             </p>
