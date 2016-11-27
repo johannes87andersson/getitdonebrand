@@ -43,14 +43,6 @@
                                     <input id="file1" type="file" />
                                     <div class="prod-text">Upload Image</div>
                                 </div>
-                                <div class="prod-img">
-                                    <input id="file2" type="file" />
-                                    <div class="prod-text">Upload Image</div>
-                                </div>
-                                <div class="prod-img">
-                                    <input id="file3" type="file" />
-                                    <div class="prod-text">Upload Image</div>
-                                </div>
                                 <div class="clearfix"></div>
                             </div>
                         </div>

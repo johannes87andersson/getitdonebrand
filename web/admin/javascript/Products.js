@@ -1,4 +1,4 @@
-var Products = function (config) {
+var Products = function () {
 
 };
 
@@ -13,7 +13,6 @@ Products.prototype.loadProductResults = function (data) {
     $(".save-product-cred").attr("id", arr.prod_id);
 };
 Products.prototype.loadProductImageResults = function (data) {
-    var p = new Products();
     var arr = JSON.parse(data);
     var prod_box = $(".prod-images");
 
@@ -23,7 +22,7 @@ Products.prototype.loadProductImageResults = function (data) {
     // stop if dont find any value
     if (arr === "false") {
         console.log("test stop");
-        p.createNewProdImgBox(1);
+        this.createNewProdImgBox(1);
         prod_box.append('<div class="clearfix"></div>');
         return;
     }
@@ -34,18 +33,24 @@ Products.prototype.loadProductImageResults = function (data) {
     if (prod_img.length < arr.length) {
         prod_box.find(".clearfix").remove();
         for (var i = prod_img.length; i < arr.length; i++) {
-            p.createNewProdImgBox((i + 1));
+            this.createNewProdImgBox((i + 1));
         }
-        p.createNewProdImgBox(arr.length + 1);
+        this.createNewProdImgBox(arr.length + 1);
         prod_box.append('<div class="clearfix"></div>');
     }
 
     for (var i = 0; i < arr.length; i++) {
         var currentPos = $("#file" + (i + 1));
         var currentPosBox = currentPos.parent();
+        currentPosBox.hide(0);
         currentPosBox.children(".prod-text").remove();
         currentPosBox.prepend('<div id="' + arr[i].img_id + '" class="del-img"><span class="glyphicon glyphicon-remove" title="Ta bort bild"></span></div>');
         currentPosBox.append('<img style="position: absolute; top: 0; left: 0;" prod-img-id="' + arr[i].img_id + '" src="/web/uploads/thumbnail/' + arr[i].filename + '" />');
+        (function (arr, i) {
+            setTimeout(function () {
+                $("#" + arr[i].img_id).parent().fadeIn("fast");
+            }, i * 100);
+        })(arr, i);
     }
 };
 Products.prototype.uploadFile = function (e, object) {
@@ -61,18 +66,16 @@ Products.prototype.uploadFile = function (e, object) {
         xhr: function () {
             var myXhr = $.ajaxSettings.xhr();
             if (myXhr.upload) {
-                myXhr.upload.addEventListener('progress', progressHandling, false);
+                myXhr.upload.addEventListener('progress', this.progressHandling, false);
             }
             return myXhr;
         },
         success: completeHandler = function (data) {
             console.log(data);
-
             that.parent().html('<img src="/web/uploads/thumbnail/' + data + '" />');
 
             var parent_id = $(".save-product-cred").attr("id");
-            var p = new Products();
-            p.addFileToDb(parent_id, data);
+            this.addFileToDb(parent_id, data);
 
         },
         error: errorHandler = function (error) {
@@ -98,12 +101,18 @@ Products.prototype.createNewProdImgBox = function (index) {
 Products.prototype.addFileToDb = function (parent_id, filename) {
     $.post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
         var json = JSON.parse(data);
-        console.log(json);
     });
 };
-Products.prototype.removeFileFromDb = function(file_id) {
-    $.post("/UploadFile/removeImage", {file_id: file_id}, function(data) {
+Products.prototype.removeFileFromDb = function (file_id) {
+    $.post("/UploadFile/removeImage", {file_id: file_id}, function (data) {
         var json = JSON.parse(data);
-        console.log(json);
     });
+};
+
+Products.prototype.progressHandling = function (e) {
+    if (e.lengthComputable) {
+        $('progress').attr({value: e.loaded, max: e.total});
+        //$(".progress-bar").attr("aria-valuemax", e.total);
+        //$(".progress-bar").attr("style", "width: " + e.loaded + "%");
+    }
 };

@@ -23,12 +23,16 @@
                 <div class="panel-body">
                     <form>
                         <div class="form-group">
+                            <span class="pull-left info-text">[Page title]</span>
                             <input type="text" class="form-control" id="page_title" placeholder="Sidans titel">
                         </div>
                         <div class="form-group">
+                            <span class="pull-left info-text">[Keywords, make sure this keywords repeats 4-5 times]</span>
+                            <div class="pull-left btn btn-danger btn-xs info-text-btn">Auto genereate [comming soon]</div>
                             <input type="text" class="form-control" id="page_keywords" placeholder="Meta nyckelord">
                         </div>
                         <div class="form-group">
+                            <span class="pull-left info-text">[Description describes this page]</span>
                             <input type="text" class="form-control" id="page_description" placeholder="Meta beskrivning">
                         </div>
                         <div class="form-group">

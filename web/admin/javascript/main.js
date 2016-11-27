@@ -58,10 +58,24 @@ $(document).ready(function () {
     switch (document.location.pathname) {
         case "/admin/pages":
             $.get("/admin/currentPage", {page_id: 1}, function (data) {
-                p.loadPageResult(data);
+                pages.loadPageResult(data);
+            });
+            break;
+        case "/admin/pages/":
+            $.get("/admin/currentPage", {page_id: 1}, function (data) {
+                pages.loadPageResult(data);
             });
             break;
         case "/admin/products":
+            $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
+                //Pages.loadPageResult(data);
+                p.loadProductResults(data);
+            });
+            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function (data) {
+                p.loadProductImageResults(data);
+            });
+            break;
+        case "/admin/products/":
             $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
                 //Pages.loadPageResult(data);
                 p.loadProductResults(data);
@@ -78,7 +92,6 @@ $(document).ready(function () {
         var prod_id = $(this).attr("id");
 
         $.get("/admin/currentProduct", {prod_id: prod_id}, function (data) {
-            //Pages.loadPageResult(data);
             p.loadProductResults(data);
         });
         $.get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function (data) {
@@ -86,71 +99,16 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on("submit", "#upload_file", function (e) {
-        e.preventDefault();
-
-        var file_id = document.getElementById("file_id");
-        var formData = new FormData(document.querySelector("form"));
-
-        // append all files to FormData object
-        for (var i = 0; i < file_id.files.length; ++i) {
-            var name = file_id.files.item(i).name;
-            formData.append("file", file_id.files[i], name);
-        }
-
-        $.ajax({
-            url: "/uploadfile/doUpload",
-            type: "POST",
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', progressHandling, false);
-                }
-                return myXhr;
-            },
-            success: completeHandler = function (data) {
-                //console.log(data);
-                var json = JSON.parse(data);
-                //console.log(json);
-                var html = [];
-                for (var i = 0; i < json.length; i++) {
-                    console.log(json[i]);
-                    html.push('<a href="#" class="thumbnail pull-left" style="margin-right: 10px; width: 171px; height: 180px;">');
-                    html.push('<div style="background-image: url(\'/web/uploads/' + json[i] + '\') center center no-repeat;"></div>');
-                    html.push('</a>');
-                }
-                var builder = html.join("");
-                $("#tn-content").append(builder);
-            },
-            error: errorHandler = function (error) {
-                alert("Upload error message: " + error.statusText);
-            },
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            timeout: 60000
-        }, 'json');
-    });
-
     $(document).on("change", ".prod-img input[type=file]", function (e) {
         p.uploadFile(e, this);
     });
-    
-    $(document).on("click", ".del-img", function(e) {
+
+    $(document).on("click", ".del-img", function (e) {
         e.preventDefault();
-        
+
         var id = $(this).attr("id");
         // remove image
         p.removeFileFromDb(id);
         $(this).parent().remove();
     });
 });
-
-function progressHandling(e) {
-    if (e.lengthComputable) {
-        $('progress').attr({value: e.loaded, max: e.total});
-        //$(".progress-bar").attr("aria-valuemax", e.total);
-        //$(".progress-bar").attr("style", "width: " + e.loaded + "%");
-    }
-}

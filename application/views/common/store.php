@@ -1,16 +1,26 @@
 <div class="container" style="position: relative;">
     <div class="row">
         <div class="col-md-1">
-            <?php for($i = 0; $i < count($prod_img); $i++) {?>
-                
-            <img width="100%" class="img img-thumbnail thumb" src="/web/uploads/thumbnail/<?php echo $prod_img[$i]["filename"]?>" />
-            <?php } ?>
+            <?php if ($prod_img) { ?>
+                <?php for ($i = 0; $i < count($prod_img); $i++) { ?>
+
+                    <img class="img img-thumbnail thumb" src="/web/uploads/thumbnail/<?php echo $prod_img[$i]["filename"] ?>" />
+                <?php }
+            } else {
+                ?>
+
+<?php } ?>
+
         </div>
         <div class="col-md-7">
-            <img width="100%" class="img img-thumbnail show-me" src="/web/uploads/<?php echo $prod_img[0]["filename"]?>" />
+            <?php if ($prod_img[0]["filename"] != NULL) { ?>
+                <img width="100%" class="img img-thumbnail show-me" src="/web/uploads/<?php echo $prod_img[0]["filename"] ?>" />
+            <?php } else { ?> 
+                Seems there´s no uploaded images yet
+<?php } ?>
         </div>
         <div class="col-md-4">
-            <?php echo $product["shopify_link"];?>
+<?php echo $product["shopify_link"]; ?>
         </div>
         <div class="clearfix"></div>
         <br />
@@ -38,7 +48,7 @@
         </div>
         <div class="col-md-4">
             <p class="text">
-                
+
             </p>
         </div>
         <div class="clearfix"></div>

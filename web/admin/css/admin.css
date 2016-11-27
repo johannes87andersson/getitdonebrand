@@ -57,3 +57,16 @@ body {
     padding-top: 35px;
     opacity: 0.5;
 }
+
+/** PAGES **/
+.info-text {
+    color: red;
+    font-size: 9px;
+    text-transform: uppercase;
+    padding-bottom: 2px;
+}
+.info-text-btn {
+    margin-left: 5px;
+    position: relative;
+    top: -5px;
+}
