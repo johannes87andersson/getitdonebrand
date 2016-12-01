@@ -1,16 +1,32 @@
 var Products = function () {
-
+    
 };
 
 Products.prototype.Init = function () {
-
+    
 };
-Products.prototype.loadProductResults = function (data) {
+Products.prototype.loadProductResults = function (data, elements) {
     var arr = JSON.parse(data);
-    $("#prod_name").val(arr.prod_name);
-    $("#prod_price").val(arr.prod_price);
-    $("#prod_shopify_link").val(arr.shopify_link);
-    $(".save-product-cred").attr("id", arr.prod_id);
+    
+    elements[0].val(arr.prod_name);
+    elements[1].val(arr.prod_price);
+    elements[2].val(arr.shopify_link);
+    elements[3].attr("id", arr.prod_id);
+};
+Products.prototype.getProductsResultElemets = function() {
+    var a = [];
+    
+    var name = $("#prod_name");
+    var price = $("#prod_price");
+    var shopify_link = $("#prod_shopify_link");
+    var cred = $(".save-product-cred");
+    
+    a.push(name);
+    a.push(price);
+    a.push(shopify_link);
+    a.push(cred);
+    
+    return a;
 };
 Products.prototype.loadProductImageResults = function (data) {
     var arr = JSON.parse(data);
@@ -21,14 +37,11 @@ Products.prototype.loadProductImageResults = function (data) {
 
     // stop if dont find any value
     if (arr === "false") {
-        console.log("test stop");
         this.createNewProdImgBox(1);
         prod_box.append('<div class="clearfix"></div>');
         return;
     }
 
-    // console.log(arr.length);
-    // console.log($(".prod-img").length);
     var prod_img = $(".prod-img");
     if (prod_img.length < arr.length) {
         prod_box.find(".clearfix").remove();
@@ -42,6 +55,7 @@ Products.prototype.loadProductImageResults = function (data) {
     for (var i = 0; i < arr.length; i++) {
         var currentPos = $("#file" + (i + 1));
         var currentPosBox = currentPos.parent();
+        currentPosBox.css("height", "149px");
         currentPosBox.hide(0);
         currentPosBox.children(".prod-text").remove();
         currentPosBox.prepend('<div id="' + arr[i].img_id + '" class="del-img"><span class="glyphicon glyphicon-remove" title="Ta bort bild"></span></div>');
@@ -59,6 +73,7 @@ Products.prototype.uploadFile = function (e, object) {
     var formData = new FormData(document.querySelector("form"));
     var name = object.files.item(0).name;
     formData.append("file", object.files[0], name);
+    var _this = this;
 
     $.ajax({
         url: "/UploadFile/productUpload",
@@ -75,7 +90,7 @@ Products.prototype.uploadFile = function (e, object) {
             that.parent().html('<img src="/web/uploads/thumbnail/' + data + '" />');
 
             var parent_id = $(".save-product-cred").attr("id");
-            this.addFileToDb(parent_id, data);
+            _this.addFileToDb(parent_id, data);
 
         },
         error: errorHandler = function (error) {
@@ -97,6 +112,29 @@ Products.prototype.createNewProdImgBox = function (index) {
     hb.push('</div>');
     var html = hb.join('');
     $(".prod-images").append(html);
+};
+Products.prototype.SaveProductCred = function (d, callback) {
+    $.post("/admin/updateProduct", d, function (data) {
+        if(typeof(callback) == "function") {
+            callback();
+        } else {
+            alert("error");
+        }
+    });
+};
+Products.prototype.showModal = function(prod_title, prod_text) {
+    
+    var title = $("#prod_title");
+    var text = $("#prod_text");
+    
+    title.html(prod_title);
+    text.html(prod_text);
+    
+    var m = $("#myModal");
+    m.modal('show');
+        setTimeout(function() {
+            m.modal('hide');
+        }, 2000);
 };
 Products.prototype.addFileToDb = function (parent_id, filename) {
     $.post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
