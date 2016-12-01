@@ -142,6 +142,30 @@ class Admin extends Base {
         }
     }
 
+    public function addNewProductSize() {
+        $size = filter_input(INPUT_POST, "size", FILTER_SANITIZE_STRING);
+        $chest = filter_input(INPUT_POST, "chest", FILTER_SANITIZE_STRING);
+        $length = filter_input(INPUT_POST, "length", FILTER_SANITIZE_STRING);
+        $parent_id = filter_input(INPUT_POST, "parent_id", FILTER_SANITIZE_NUMBER_INT);
+
+        if ($size == null) {
+            $size = "";
+        }
+        if ($chest == null) {
+            $chest = "";
+        }
+        if ($length == null) {
+            $length = "";
+        }
+
+        $this->vars["newSize"] = $this->AdminModel->addNewProductSize($size, $chest, $length, $parent_id);
+        if ($this->vars["newSize"]) {
+            echo json_encode($this->vars["newSize"]);
+        } else {
+            echo json_encode("false");
+        }
+    }
+
     public function pages() {
         $this->vars["pages"] = $this->AdminModel->getAllPages();
 

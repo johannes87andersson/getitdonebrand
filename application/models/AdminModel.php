@@ -72,5 +72,11 @@ class AdminModel extends BaseModel {
         $res = $q->result_array();
         return (count($res) > 0) ? $res : false;
     }
+    
+    public function addNewProductSize($size = "", $chest = "", $length = "", $parent_id) {
+        $sql = "INSERT INTO prod_size SET size = ?, chest = ?, length = ?, parent_id = ?";
+        $q = $this->db->query($sql, array($size, $chest, $length, $parent_id));
+        return ($this->db->insert_id() > 0) ? $this->db->insert_id() : false;
+    }
 
 }

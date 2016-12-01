@@ -1,12 +1,12 @@
 $(document).ready(function () {
-
     var p = new Products();
     var pages = new Pages();
+    var ajax = new Ajax();
 
     $(document).on("click", ".save-page-cred", function (e) {
         e.preventDefault();
 
-        var page_id = $(".save-page-cred").attr("id");
+        var page_id = $(".save-page-cred").val();
         var page_title = $("#page_title").val();
         var page_text = CKEDITOR.instances["page_text"].getData();
         var page_keywords = $("#page_keywords").val();
@@ -19,8 +19,17 @@ $(document).ready(function () {
             page_desc: page_desc,
             page_keywords: page_keywords
         };
-        $.post("/admin/updatePage", d, function (data) {
-            console.log(data);
+//        $.post("/admin/updatePage", d, function (data) {
+//            console.log(data);
+//        });
+        $.ajax({
+            type: "POST",
+            url: "/Admin/updatePage",
+            data: d,
+            success: function (data) {
+                console.log(data);
+            },
+            async: true
         });
     });
 
@@ -60,41 +69,33 @@ $(document).ready(function () {
         e.preventDefault();
 
         var page_id = $(this).attr("load_page");
-
-        $.get("/admin/currentPage", {page_id: page_id}, function (data) {
-            pages.loadPageResult(data, pages.getPageResultElements());
+        $.ajax({
+            type: "GET",
+            url: "/admin/currentPage",
+            data: {page_id: page_id},
+            success: function (data) {
+                pages.loadPageResult(data, pages.getPageResultElements());
+            },
+            async: true
         });
+//        $.get("/admin/currentPage", {page_id: page_id}, function (data) {
+//            pages.loadPageResult(data, pages.getPageResultElements());
+//        });
     });
 
     // auto load first value
     switch (document.location.pathname) {
         case "/admin/pages":
-            $.get("/admin/currentPage", {page_id: 1}, function (data) {
-                pages.loadPageResult(data, pages.getPageResultElements());
-            });
+            doInPages(pages, ajax);
             break;
         case "/admin/pages/":
-            $.get("/admin/currentPage", {page_id: 1}, function (data) {
-                pages.loadPageResult(data, pages.getPageResultElements());
-            });
+            doInPages(pages, ajax);
             break;
         case "/admin/products":
-            $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
-                //Pages.loadPageResult(data);
-                p.loadProductResults(data, p.getProductsResultElemets());
-            });
-            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function (data) {
-                p.loadProductImageResults(data);
-            });
+            doInProducts(p, document, ajax);
             break;
         case "/admin/products/":
-            $.get("/admin/currentProduct", {prod_id: 1}, function (data) {
-                //Pages.loadPageResult(data);
-                p.loadProductResults(data, p.getProductsResultElemets());
-            });
-            $.get("/admin/getCurrentProductsImages", {parent_id: 1}, function (data) {
-                p.loadProductImageResults(data);
-            });
+            doInProducts(p, document, ajax);
             break;
     }
 
@@ -103,12 +104,8 @@ $(document).ready(function () {
 
         var prod_id = $(this).attr("id");
 
-        $.get("/admin/currentProduct", {prod_id: prod_id}, function (data) {
-            p.loadProductResults(data, p.getProductsResultElemets());
-        });
-        $.get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function (data) {
-            p.loadProductImageResults(data);
-        });
+        ajax.Get("/admin/currentProduct", {prod_id: prod_id}, function(data) { p.loadProductResults(data, p.getProductsResultElemets()); }, function(e) { console.log(e); });
+        ajax.Get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function(data) { p.loadProductImageResults(data); }, function(e) { console.log(e); });
     });
 
     $(document).on("change", ".prod-img input[type=file]", function (e) {
@@ -123,4 +120,51 @@ $(document).ready(function () {
         p.removeFileFromDb(id);
         $(this).parent().remove();
     });
+
+
 });
+
+function doInPages(pages, ajax) {
+    ajax.Get(
+            "/admin/currentPage",
+            {page_id: 1},
+            function (data) {
+                pages.loadPageResult(data, pages.getPageResultElements());
+            },
+            function (error) {
+                console.log(error);
+            }
+    );
+}
+
+function doInProducts(p, doc, ajax) {
+    ajax.Get(
+            "/admin/currentProduct",
+            {prod_id: 1},
+            function (data) {
+                p.loadProductResults(data, p.getProductsResultElemets());
+            },
+            function (error) {
+                console.log(error);
+            }
+    );
+    ajax.Get(
+            "/admin/getCurrentProductsImages",
+            {parent_id: 1},
+            function (data) {
+                p.loadProductImageResults(data);
+            },
+            function (error) {
+                console.log(error);
+            }
+    );
+
+    $(doc).on("dblclick", "#product_table tr td", function (e) {
+        p.tableAddInput(e);
+    });
+
+    doc.getElementById("table-create-row").addEventListener('click', function (e) {
+        e.preventDefault();
+        p.tableAddRow(e);
+    });
+}

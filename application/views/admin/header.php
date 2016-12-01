@@ -28,6 +28,7 @@
                 });
             }
         </script>
+        <script src="/web/admin/javascript/Ajax.js"></script>
         <script src="/web/admin/javascript/Pages.js"></script>
         <script src="/web/admin/javascript/Products.js"></script>
         <script src="/web/admin/javascript/main.js"></script>

@@ -1,31 +1,32 @@
 var Products = function () {
-    
+
 };
 
 Products.prototype.Init = function () {
-    
+
 };
 Products.prototype.loadProductResults = function (data, elements) {
     var arr = JSON.parse(data);
-    
-    elements[0].val(arr.prod_name);
-    elements[1].val(arr.prod_price);
-    elements[2].val(arr.shopify_link);
-    elements[3].attr("id", arr.prod_id);
+
+    elements[0].value = arr.prod_name;
+    elements[1].value = arr.prod_price;
+    elements[2].value = arr.shopify_link;
+    elements[3].setAttribute("id", arr.prod_id);
+    //elements[3].setAttribute("id", arr.prod_id);
 };
-Products.prototype.getProductsResultElemets = function() {
+Products.prototype.getProductsResultElemets = function () {
     var a = [];
-    
-    var name = $("#prod_name");
-    var price = $("#prod_price");
-    var shopify_link = $("#prod_shopify_link");
-    var cred = $(".save-product-cred");
-    
+    var doc = document;
+    var name = doc.getElementById("prod_name");
+    var price = doc.getElementById("prod_price");
+    var shopify_link = doc.getElementById("prod_shopify_link");
+    var cred = doc.getElementsByClassName("save-product-cred");
+
     a.push(name);
     a.push(price);
     a.push(shopify_link);
-    a.push(cred);
-    
+    a.push(cred[0]);
+
     return a;
 };
 Products.prototype.loadProductImageResults = function (data) {
@@ -96,6 +97,7 @@ Products.prototype.uploadFile = function (e, object) {
         error: errorHandler = function (error) {
             alert("Upload error message: " + error.statusText);
         },
+        async: true,
         data: formData,
         cache: false,
         contentType: false,
@@ -114,27 +116,40 @@ Products.prototype.createNewProdImgBox = function (index) {
     $(".prod-images").append(html);
 };
 Products.prototype.SaveProductCred = function (d, callback) {
-    $.post("/admin/updateProduct", d, function (data) {
-        if(typeof(callback) == "function") {
-            callback();
-        } else {
-            alert("error");
-        }
+//    $.post("/admin/updateProduct", d, function (data) {
+//        if (typeof (callback) == "function") {
+//            callback();
+//        } else {
+//            alert("error");
+//        }
+//    });
+    $.ajax({
+        type: "POST",
+        url: "/admin/updateProduct",
+        data: d,
+        success: function (data) {
+            if (typeof (callback) == "function") {
+                callback();
+            } else {
+                alert("error");
+            }
+        },
+        async: true
     });
 };
-Products.prototype.showModal = function(prod_title, prod_text) {
-    
+Products.prototype.showModal = function (prod_title, prod_text) {
+
     var title = $("#prod_title");
     var text = $("#prod_text");
-    
+
     title.html(prod_title);
     text.html(prod_text);
-    
+
     var m = $("#myModal");
     m.modal('show');
-        setTimeout(function() {
-            m.modal('hide');
-        }, 2000);
+    setTimeout(function () {
+        m.modal('hide');
+    }, 2000);
 };
 Products.prototype.addFileToDb = function (parent_id, filename) {
     $.post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
@@ -153,4 +168,86 @@ Products.prototype.progressHandling = function (e) {
         //$(".progress-bar").attr("aria-valuemax", e.total);
         //$(".progress-bar").attr("style", "width: " + e.loaded + "%");
     }
+};
+Products.prototype.tableAddInput = function (_this) {
+    var that = this;
+    //console.log(_this.target.innerHTML);
+    var target = _this.target;
+    if (target.innerHTML === "Null") {
+        target.innerHTML = '<input type="text" id="testarnu" placeholder="Test" tabindex="1" />';
+    } else {
+        target.innerHTML = '<input type="text" id="testarnu" placeholder="Test" tabindex="1" value="' + target.innerHTML + '" />';
+    }
+    target.querySelector('#testarnu').focus();
+    console.log(target.getAttribute("data"));
+    target.addEventListener('keydown', function (e) {
+        //console.log(e.which);
+        switch (e.which) {
+            case 27:
+                target.innerHTML = 'Null';
+                break;
+            case 13:
+                e.preventDefault();
+                if (e.target.value == "") {
+                    target.innerHTML = "Null";
+                } else {
+                    target.innerHTML = e.target.value;
+                    var d = {};
+                    var attr = target.getAttribute("data");
+                    switch (attr) {
+                        case "size":
+                            d.size = e.target.value;
+                            break;
+                        case "chest":
+                            d.chest = e.target.value;
+                            break;
+                        case "length":
+                            d.length = e.target.value;
+                            break;
+                    }
+                    d.parent_id = $(".save-product-cred").attr("id");
+                    that.saveNewProductSize(d);
+                }
+                break;
+        }
+    });
+
+    return;
+};
+Products.prototype.saveNewProductSize = function (d) {
+    $.post("/Admin/addNewProductSize", d, function (data) {
+        console.log(data);
+    });
+};
+Products.prototype.tableAddRow = function (e) {
+    var doc = document;
+
+    //var table = doc.getElementById("product_table");
+    var table = $("#product_table");
+
+    var hb = [];
+    hb.push('<tr>');
+    hb.push('<td data="size">Null</td>');
+    hb.push('<td data="chest">Null</td>');
+    hb.push('<td data="length">Null</td>');
+    hb.push('</tr>');
+    var html = hb.join("");
+
+    table.append(html);
+
+    //tbody.appendChild(tr);
+};
+Products.prototype.Ajax = function(type, url, d, callback, error) {
+    $.ajax({
+        type: type,
+        url: url,
+        data: d,
+        success: function(data) {
+            callback(data);
+        },
+        error: function(e) {
+            error(e);
+        },
+        async: true
+    });
 };
