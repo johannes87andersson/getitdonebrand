@@ -56,17 +56,15 @@
                             <table class="table table-hover table-bordered" id="product_table">
                                 <tr>
                                     <th class="text-center">Size</th>
-                                    <th class="text-center">Chest (Inches)</th>
-                                    <th class="text-center">Length (Inches)</th>
-                                </tr>
-                                <tr data-id="">
-                                    <td data="size">Null</td>
-                                    <td data="chest">Null</td>
-                                    <td data="length">Null</td>
+                                    <th class="text-center">Chest (Inches/cm)</th>
+                                    <th class="text-center">Length (Inches/cm)</th>
                                 </tr>
                             </table>
                             <button class="btn btn-warning pull-right" id="table-create-row">New Row</button>
                             <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="ckeditor_field" class="form-control" id="prod_text"></textarea>
                         </div>
 
                         <hr />

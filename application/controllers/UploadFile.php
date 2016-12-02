@@ -152,7 +152,11 @@ class UploadFile extends Base {
             if (move_uploaded_file($_FILES["file"]["tmp_name"], $root . "/web/uploads/" . $newName)) {
                 $imgFile = $root . "/web/uploads/" . $newName;
                 $imgThumb = $root . "/web/uploads/thumbnail/" . $newName;
-                $this->createThumbnail($imgFile, $imgThumb);
+                $imgMedium = $root . "/web/uploads/thumbnail/medium/" . $newName;
+                $imgSmall = $root . "/web/uploads/thumbnail/small/" . $newName;
+                $this->createThumbnail($imgFile, $imgThumb, 100);
+                $this->createThumbnail($imgFile, $imgMedium, 653);
+                $this->createThumbnail($imgFile, $imgSmall, 290);
                 echo $newName;
             }
         } else {
@@ -160,10 +164,9 @@ class UploadFile extends Base {
         }
     }
 
-    private function createThumbnail($image, $thumbnail) {
+    private function createThumbnail($image, $thumbnail, $newWidth) {
         $metaData = getimagesize($image);
         $img = '';
-        $newWidth = 100;
         $newHeight = $metaData[1] / ($metaData[0] / $newWidth);
 
         switch ($metaData["mime"]) {

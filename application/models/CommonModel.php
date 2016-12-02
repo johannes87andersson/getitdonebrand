@@ -52,5 +52,12 @@ class CommonModel extends BaseModel {
         $res = $q->result_array();
         return (count($res) > 0) ? $res : false;
     }
+    
+    public function getAllProductSize($parent_id) {
+        $sql = "SELECT * FROM prod_size WHERE parent_id = ?";
+        $q = $this->db->query($sql, array($parent_id));
+        $res = $q->result_array();
+        return (count($res) > 0) ? $res : false;
+    }
 
 }

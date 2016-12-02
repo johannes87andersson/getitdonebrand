@@ -13,6 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="<?php echo $page["page_desc"] ?>">
         <meta name="keywords" content="<?php echo $page["page_keywords"]; ?>">
+        <link rel="shortcut icon" href="/web/images/Get it done logotyp small.ico"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
         <link rel="stylesheet" href="/web/css/main.css" />
         <!-- Latest compiled and minified JavaScript -->
@@ -22,6 +23,26 @@
             p {
                 margin: 0px 0 10px 0;
             }
+            /* animate menu */
+            .menu-main li > a:before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: #000;
+                visibility: hidden;
+                -webkit-transform: scaleX(0);
+                transform: scaleX(0);
+                -webkit-transition: all 0.3s ease-in-out 0s;
+                transition: all 0.3s ease-in-out 0s;
+            }
+            .menu-main li > a:hover:before {
+                visibility: visible;
+                -webkit-transform: scaleX(1);
+                transform: scaleX(1);
+            }
         </style>
     </head>
     <?php flush(); ?>
@@ -29,32 +50,31 @@
         <div class="test">
             <!-- needed for background image -->
         </div>
-        <nav class="navbar main-menu">
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <!--<a class="navbar-brand" href="/">GetItDone</a>-->
-                    <a class="navbar-brand logo" href="/"><img width="50" src="/web/images/getitdone-logo.svg"/> <!--<span class="inner-logo-text">Get It Done</span><span class="inner-logo-text2">Brand Sweden</span>--></a>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2" style="padding-left: 0;">
+                    <ul class="nav nav-pills pull-left">
+                        <li role="presentation" class="">
+                            <a href="/">
+                                <img src="/web/images/Get it done logotyp small.png">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><img class="menu-icons" src="/web/images/facebook.svg" /></a></li>
-                        <li><a href="#"><img class="menu-icons" src="/web/images/instagram.svg" /></a></li>
-                        <li><a href="#"><img class="menu-icons" src="/web/images/snapchat.svg" /></a></li>
+                <div class="col-md-10">
+                    <ul class="nav nav-pills pull-right menu-main">
+                        <li role="presentation" class=""><a style="color: black;" href="/common/products">Store</a></li>
+                        <li role="presentation" class=""><a style="color: black;" href="/common/about">About</a></li>
+                        <li role="presentation" class=""><a style="color: black;" href="/common/contact">Contact</a></li>
+                        <li><a target="_blank" href="https://www.facebook.com/getitdonebrand/?fref=ts"><img class="menu-icons" src="/web/images/facebook.svg" /></a></li>
+                        <li><a target="_blank" href="https://www.instagram.com/getitdonebrand/"><img class="menu-icons" src="/web/images/instagram.svg" /></a></li>
+                        <!--<li><a href="#"><img class="menu-icons" src="/web/images/snapchat.svg" /></a></li>-->
                         <li class="hide-me"><a href="#"><img class="menu-icons" src="/web/images/sv.png" /></a></li>
                         <li class="hide-me"><a href="#"><img class="menu-icons" src="/web/images/en.png" /></a></li>
                     </ul>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-        </nav>
+                </div>
+            </div>
+        </div>
         <div class="clearfix"></div>
 
         <div class="container">

@@ -46,37 +46,50 @@ class AdminModel extends BaseModel {
         return ($this->db->affected_rows()) ? true : false;
     }
 
-    public function updateCurrentProduct($prod_id, $prod_name, $prod_price, $prod_shopify_link) {
-        $sql = "UPDATE products SET prod_name = ?, prod_price = ?, shopify_link = ? WHERE prod_id = ?";
-        $q = $this->db->query($sql, array($prod_name, $prod_price, $prod_shopify_link, $prod_id));
+    public function updateCurrentProduct($prod_id, $prod_name, $prod_price, $prod_shopify_link, $prod_desc) {
+        $sql = "UPDATE products SET prod_name = ?, prod_price = ?, shopify_link = ?, prod_desc = ? WHERE prod_id = ?";
+        $q = $this->db->query($sql, array($prod_name, $prod_price, $prod_shopify_link, $prod_desc, $prod_id));
         return ($this->db->affected_rows()) ? true : false;
     }
-    
+
     public function getAllProducts() {
         $sql = "SELECT prod_id, prod_name FROM products";
         $q = $this->db->query($sql);
         $res = $q->result_array();
         return (count($res) > 0) ? $res : false;
     }
-    
+
     public function getCurrentProduct($prod_id) {
         $sql = "SELECT * FROM products WHERE prod_id = ?";
         $q = $this->db->query($sql, array($prod_id));
         $res = $q->result_array();
         return (count($res) > 0) ? $res[0] : false;
     }
-    
+
     public function getCurrentProductsImages($parent_id) {
         $sql = "SELECT * FROM prod_img WHERE parent_id = ?";
         $q = $this->db->query($sql, array($parent_id));
         $res = $q->result_array();
         return (count($res) > 0) ? $res : false;
     }
-    
+
     public function addNewProductSize($size = "", $chest = "", $length = "", $parent_id) {
         $sql = "INSERT INTO prod_size SET size = ?, chest = ?, length = ?, parent_id = ?";
         $q = $this->db->query($sql, array($size, $chest, $length, $parent_id));
         return ($this->db->insert_id() > 0) ? $this->db->insert_id() : false;
+    }
+
+    public function updateProductSize($size, $chest, $length, $size_id) {
+        $sql = "UPDATE prod_size SET size = ?, chest = ?, length = ? WHERE size_id = ?";
+        $q = $this->db->query($sql, array($size, $chest, $length, $size_id));
+        return ($this->db->affected_rows() > 0) ? true : false;
+    }
+
+    public function getAllProductSize($parent_id) {
+        $sql = "SELECT * FROM prod_size WHERE parent_id = ?";
+        $q = $this->db->query($sql, array($parent_id));
+        $res = $q->result_array();
+        return (count($res) > 0) ? $res : false;
     }
 
 }

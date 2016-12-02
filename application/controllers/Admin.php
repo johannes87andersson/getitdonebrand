@@ -133,9 +133,10 @@ class Admin extends Base {
         $prod_name = filter_input(INPUT_POST, "prod_name", FILTER_SANITIZE_STRING);
         $prod_price = filter_input(INPUT_POST, "prod_price", FILTER_SANITIZE_NUMBER_INT);
         $prod_shopify_link = filter_input(INPUT_POST, "prod_shopify_link", FILTER_UNSAFE_RAW);
+        $prod_desc = filter_input(INPUT_POST, "prod_desc");
 
-        $this->vars["update_page"] = $this->AdminModel->updateCurrentProduct($prod_id, $prod_name, $prod_price, $prod_shopify_link);
-        if ($this->vars["update_page"]) {
+        $this->vars["update_prod"] = $this->AdminModel->updateCurrentProduct($prod_id, $prod_name, $prod_price, $prod_shopify_link, $prod_desc);
+        if ($this->vars["update_prod"]) {
             echo json_encode("true");
         } else {
             echo json_encode("false");
@@ -161,6 +162,41 @@ class Admin extends Base {
         $this->vars["newSize"] = $this->AdminModel->addNewProductSize($size, $chest, $length, $parent_id);
         if ($this->vars["newSize"]) {
             echo json_encode($this->vars["newSize"]);
+        } else {
+            echo json_encode("false");
+        }
+    }
+
+    public function updateProductSize() {
+        $size = filter_input(INPUT_POST, "size", FILTER_SANITIZE_STRING);
+        $chest = filter_input(INPUT_POST, "chest", FILTER_SANITIZE_STRING);
+        $length = filter_input(INPUT_POST, "length", FILTER_SANITIZE_STRING);
+        $size_id = filter_input(INPUT_POST, "size_id", FILTER_SANITIZE_NUMBER_INT);
+//        if ($size == null) {
+//            $size = "";
+//        }
+//        if ($chest == null) {
+//            $chest = "";
+//        }
+//        if ($length == null) {
+//            $length = "";
+//        }
+
+        $this->vars["updateSize"] = $this->AdminModel->updateProductSize($size, $chest, $length, $size_id);
+        if ($this->vars["updateSize"]) {
+            echo json_encode("true");
+        } else {
+            echo json_encode("false");
+        }
+    }
+
+    public function getAllProductSize() {
+        $parent_id = filter_input(INPUT_GET, "parent_id", FILTER_SANITIZE_NUMBER_INT);
+        
+        $this->vars["allSizes"] = $this->AdminModel->getAllProductSize($parent_id);
+        
+        if($this->vars["allSizes"]) {
+            echo json_encode($this->vars["allSizes"]);
         } else {
             echo json_encode("false");
         }

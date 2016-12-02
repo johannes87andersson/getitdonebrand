@@ -19,17 +19,11 @@ $(document).ready(function () {
             page_desc: page_desc,
             page_keywords: page_keywords
         };
-//        $.post("/admin/updatePage", d, function (data) {
-//            console.log(data);
-//        });
-        $.ajax({
-            type: "POST",
-            url: "/Admin/updatePage",
-            data: d,
-            success: function (data) {
-                console.log(data);
-            },
-            async: true
+
+        ajax.Post("/Admin/updatePage", d, function (data) {
+            console.log(data);
+        }, function (error) {
+            console.log(error);
         });
     });
 
@@ -40,12 +34,14 @@ $(document).ready(function () {
         var prod_name = $("#prod_name");
         var prod_price = $("#prod_price");
         var prod_shopify_link = $("#prod_shopify_link");
+        var prod_desc = CKEDITOR.instances["prod_text"].getData();
 
         var d = {
             prod_id: prod_id,
             prod_name: prod_name.val(),
             prod_price: prod_price.val(),
-            prod_shopify_link: prod_shopify_link.val()
+            prod_shopify_link: prod_shopify_link.val(),
+            prod_desc: prod_desc
         };
         if (d.prod_id == null) {
             p.showModal("Error saving", "Could not save product because no ID found");
@@ -69,18 +65,12 @@ $(document).ready(function () {
         e.preventDefault();
 
         var page_id = $(this).attr("load_page");
-        $.ajax({
-            type: "GET",
-            url: "/admin/currentPage",
-            data: {page_id: page_id},
-            success: function (data) {
-                pages.loadPageResult(data, pages.getPageResultElements());
-            },
-            async: true
+
+        ajax.Get("/admin/currentPage", {page_id: page_id}, function (data) {
+            pages.loadPageResult(data, pages.getPageResultElements());
+        }, function (error) {
+            console.log(error);
         });
-//        $.get("/admin/currentPage", {page_id: page_id}, function (data) {
-//            pages.loadPageResult(data, pages.getPageResultElements());
-//        });
     });
 
     // auto load first value
@@ -104,8 +94,21 @@ $(document).ready(function () {
 
         var prod_id = $(this).attr("id");
 
-        ajax.Get("/admin/currentProduct", {prod_id: prod_id}, function(data) { p.loadProductResults(data, p.getProductsResultElemets()); }, function(e) { console.log(e); });
-        ajax.Get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function(data) { p.loadProductImageResults(data); }, function(e) { console.log(e); });
+        ajax.Get("/admin/currentProduct", {prod_id: prod_id}, function (data) {
+            p.loadProductResults(data, p.getProductsResultElemets());
+        }, function (e) {
+            console.log(e);
+        });
+        ajax.Get("/admin/getCurrentProductsImages", {parent_id: prod_id}, function (data) {
+            p.loadProductImageResults(data);
+        }, function (e) {
+            console.log(e);
+        });
+        ajax.Get("/admin/getAllProductSize", {parent_id: prod_id}, function (data) {
+            p.loadProductSizes(data);
+        }, function (error) {
+            console.log(error);
+        });
     });
 
     $(document).on("change", ".prod-img input[type=file]", function (e) {
@@ -138,9 +141,7 @@ function doInPages(pages, ajax) {
 }
 
 function doInProducts(p, doc, ajax) {
-    ajax.Get(
-            "/admin/currentProduct",
-            {prod_id: 1},
+    ajax.Get("/admin/currentProduct", {prod_id: 1},
             function (data) {
                 p.loadProductResults(data, p.getProductsResultElemets());
             },
@@ -148,9 +149,7 @@ function doInProducts(p, doc, ajax) {
                 console.log(error);
             }
     );
-    ajax.Get(
-            "/admin/getCurrentProductsImages",
-            {parent_id: 1},
+    ajax.Get("/admin/getCurrentProductsImages", {parent_id: 1},
             function (data) {
                 p.loadProductImageResults(data);
             },
@@ -158,12 +157,17 @@ function doInProducts(p, doc, ajax) {
                 console.log(error);
             }
     );
+    ajax.Get("/admin/getAllProductSize", {parent_id: 1}, function (data) {
+        p.loadProductSizes(data);
+    }, function (error) {
+        console.log(error);
+    });
 
-    $(doc).on("dblclick", "#product_table tr td", function (e) {
+    $(document).on("dblclick", "#product_table tr td", function (e) {
         p.tableAddInput(e);
     });
 
-    doc.getElementById("table-create-row").addEventListener('click', function (e) {
+    document.getElementById("table-create-row").addEventListener('click', function (e) {
         e.preventDefault();
         p.tableAddRow(e);
     });

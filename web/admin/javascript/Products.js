@@ -1,9 +1,6 @@
 var Products = function () {
-
-};
-
-Products.prototype.Init = function () {
-
+    var ajax = new Ajax();
+    this.ajax = ajax;
 };
 Products.prototype.loadProductResults = function (data, elements) {
     var arr = JSON.parse(data);
@@ -12,6 +9,7 @@ Products.prototype.loadProductResults = function (data, elements) {
     elements[1].value = arr.prod_price;
     elements[2].value = arr.shopify_link;
     elements[3].setAttribute("id", arr.prod_id);
+    elements[4].setData(arr.prod_desc);
     //elements[3].setAttribute("id", arr.prod_id);
 };
 Products.prototype.getProductsResultElemets = function () {
@@ -21,11 +19,13 @@ Products.prototype.getProductsResultElemets = function () {
     var price = doc.getElementById("prod_price");
     var shopify_link = doc.getElementById("prod_shopify_link");
     var cred = doc.getElementsByClassName("save-product-cred");
+    var desc = CKEDITOR.instances["prod_text"];
 
     a.push(name);
     a.push(price);
     a.push(shopify_link);
     a.push(cred[0]);
+    a.push(desc);
 
     return a;
 };
@@ -116,25 +116,12 @@ Products.prototype.createNewProdImgBox = function (index) {
     $(".prod-images").append(html);
 };
 Products.prototype.SaveProductCred = function (d, callback) {
-//    $.post("/admin/updateProduct", d, function (data) {
-//        if (typeof (callback) == "function") {
-//            callback();
-//        } else {
-//            alert("error");
-//        }
-//    });
-    $.ajax({
-        type: "POST",
-        url: "/admin/updateProduct",
-        data: d,
-        success: function (data) {
-            if (typeof (callback) == "function") {
-                callback();
-            } else {
-                alert("error");
-            }
-        },
-        async: true
+    this.ajax.Post("/admin/updateProduct", d, function (data) {
+        if (typeof (callback) == "function") {
+            callback();
+        }
+    }, function (error) {
+        console.log(error);
     });
 };
 Products.prototype.showModal = function (prod_title, prod_text) {
@@ -152,13 +139,18 @@ Products.prototype.showModal = function (prod_title, prod_text) {
     }, 2000);
 };
 Products.prototype.addFileToDb = function (parent_id, filename) {
-    $.post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
-        var json = JSON.parse(data);
+    this.ajax.Post("/UploadFile/insertImage", {parent_id: parent_id, filename: filename}, function (data) {
+        console.log(data);
+    }, function (error) {
+        console.log(error);
     });
 };
 Products.prototype.removeFileFromDb = function (file_id) {
-    $.post("/UploadFile/removeImage", {file_id: file_id}, function (data) {
-        var json = JSON.parse(data);
+    this.ajax.Post("/UploadFile/removeImage", {file_id: file_id}, function (data) {
+        //var json = JSON.parse(data);
+        console.log(data);
+    }, function (error) {
+        console.log(error);
     });
 };
 
@@ -197,16 +189,28 @@ Products.prototype.tableAddInput = function (_this) {
                     switch (attr) {
                         case "size":
                             d.size = e.target.value;
+                            d.chest = $(this).parent().find("td[data=chest]").html();
+                            d.length = $(this).parent().find("td[data=length]").html();
                             break;
                         case "chest":
                             d.chest = e.target.value;
+                            d.size = $(this).parent().find("td[data=size]").html();
+                            d.length = $(this).parent().find("td[data=length]").html();
                             break;
                         case "length":
+                            d.chest = $(this).parent().find("td[data=chest]").html();
+                            d.size = $(this).parent().find("td[data=size]").html();
                             d.length = e.target.value;
                             break;
                     }
                     d.parent_id = $(".save-product-cred").attr("id");
-                    that.saveNewProductSize(d);
+                    var data_id = $(this).parent().attr("data-id");
+                    if (data_id == "" || data_id == null) {
+                        that.saveNewProductSize(d, $(this));
+                    } else {
+                        d.size_id = data_id;
+                        that.updateProductSize(d, $(this));
+                    }
                 }
                 break;
         }
@@ -214,15 +218,23 @@ Products.prototype.tableAddInput = function (_this) {
 
     return;
 };
-Products.prototype.saveNewProductSize = function (d) {
-    $.post("/Admin/addNewProductSize", d, function (data) {
+Products.prototype.saveNewProductSize = function (d, _this) {
+    this.ajax.Post("/Admin/addNewProductSize", d, function (data) {
         console.log(data);
+        _this.parent().attr("data-id", data);
+    }, function (error) {
+        console.log(error);
+    });
+};
+Products.prototype.updateProductSize = function (d, _this) {
+    this.ajax.Post("/Admin/updateProductSize", d, function (data) {
+        console.log(data);
+    }, function (error) {
+        console.log(error);
     });
 };
 Products.prototype.tableAddRow = function (e) {
-    var doc = document;
 
-    //var table = doc.getElementById("product_table");
     var table = $("#product_table");
 
     var hb = [];
@@ -234,20 +246,42 @@ Products.prototype.tableAddRow = function (e) {
     var html = hb.join("");
 
     table.append(html);
-
-    //tbody.appendChild(tr);
 };
-Products.prototype.Ajax = function(type, url, d, callback, error) {
-    $.ajax({
-        type: type,
-        url: url,
-        data: d,
-        success: function(data) {
-            callback(data);
-        },
-        error: function(e) {
-            error(e);
-        },
-        async: true
-    });
+Products.prototype.loadProductSizes = function (data) {
+    var json = JSON.parse(data);
+    console.log(json);
+    var table = $("#product_table");
+    table.html("");
+
+    var hb = [];
+    if (json == "false") {
+        hb.push('<thead>');
+        hb.push('<tr>');
+        hb.push('<th class="text-center">Size</th>');
+        hb.push('<th class="text-center">Chest (Inches/cm)</th>');
+        hb.push('<th class="text-center">Length (Inches/cm)</th>');
+        hb.push('</tr>');
+        hb.push('</thead>');
+        hb.push('<tbody>');
+        hb.push('</tbody>');
+    } else {
+        hb.push('<thead>');
+        hb.push('<tr>');
+        hb.push('<th class="text-center">Size</th>');
+        hb.push('<th class="text-center">Chest (Inches/cm)</th>');
+        hb.push('<th class="text-center">Length (Inches/cm)</th>');
+        hb.push('</tr>');
+        hb.push('</thead>');
+        hb.push('<tbody>');
+        for (var i = 0; i < json.length; i++) {
+            hb.push('<tr data-id="' + json[i].size_id + '">');
+            hb.push('<td data="size">' + json[i].size + '</td>');
+            hb.push('<td data="chest">' + json[i].chest + '</td>');
+            hb.push('<td data="length">' + json[i].length + '</td>');
+            hb.push('</tr>');
+        }
+        hb.push('</tbody>');
+    }
+    var html = hb.join("");
+    table.append(html);
 };
