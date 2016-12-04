@@ -82,12 +82,12 @@
                 <div class="col-md-3">
                     <div class="text text-left">
                         <h2 class="text lead"><?php echo $page["page_title"]; ?></h2>
-                        <form>
+                        <form method="POST" action="/common/sendEmail">
                             <div class="form-group">
-                                <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Email">
+                                <input type="email" class="form-control" id="contact_email" name="email_from" placeholder="Email">
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" id="contact_question" name="contact_question" placeholder="Dina fråga"></textarea>
+                                <textarea class="form-control" id="contact_question" name="email_body" placeholder="Dina fråga"></textarea>
                             </div>
                             <button type="submit" class="btn btn-default">Submit</button>
                         </form>
@@ -104,3 +104,8 @@
                 <div class="clearfix"></div>
             </div>
         </div>
+        <?php
+        echo '<pre>';
+        print_r($_SERVER);
+        echo '</pre>';
+        ?>
