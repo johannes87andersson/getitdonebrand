@@ -12,10 +12,15 @@ class Base extends CI_Controller {
     
     public function header() {
         $this->load->view('common/header');
+        $this->menu();
     }
     
     public function footer() {
         $this->load->view('common/footer');
+    }
+    
+    public function menu() {
+        $this->load->view('common/menu');
     }
     
 }

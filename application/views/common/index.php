@@ -1,7 +1,8 @@
-<video playsinline autoplay loop poster="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg" id="bgvid">
+<video playsinline autoplay loop poster="/web/images/test2.png" id="bgvid">
     <!--<source src="http://thenewcode.com/assets/videos/polina.webm" type="video/webm">-->
     <!--<source src="/web/videos/Do You Remember.mp4" type="video/webm">-->
-    <source src="/web/videos/Do You Remember.mp4" type="video/mp4">
+    <source src="/web/videos/Get it done event RÅ.mp4" type="video/mp4">
+    <img src="/web/images/test2.png" />
 </video>
 <div class="container" style="position: relative;">
     <div class="row">
@@ -30,7 +31,7 @@
         <br />
         <div class="col-md-12">
             <div class="text text-center lead big-landpage-text">
-                How we Get It Done Togehter
+                Get It Done Brand Sweden
             </div>
         </div>
         <div class="clearfix"></div>
@@ -44,7 +45,7 @@
     </div>
 </div>
 <div class="made-by" style="position: absolute; bottom: 5px; right: 5px; z-index: 1000; color: #FFF; font-size: 12px;">
-    Utvecklad av <a style="color: #fff;" target="_blank" href="http://www.ziinloader.com">Ziinloader</a>
+    Developed by <a style="color: #fff;" target="_blank" href="http://www.ziinloader.com">Ziinloader</a>
 </div>
 <style>
     .test {

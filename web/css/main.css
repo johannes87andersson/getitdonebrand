@@ -27,8 +27,8 @@ video {
     -ms-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
-    background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/polina.jpg') no-repeat; 
-    background-size: cover;  
+    /*background: url('/web/images/bg-img.png') no-repeat;*/ 
+    /*background-size: cover;*/ 
     -webkit-transition: 1s opacity; 
     transition: 1s opacity; 
 }
@@ -79,8 +79,11 @@ p {
     border-top: 1px solid #9c9c9c;
 }
 .thumb {
-    margin: 0px 0 5px 0;
     cursor: pointer;
+    float: left;
+    height: 86px;
+    margin: 0 5px 5px 0;
+    width: 58px;
 }
 
 /* start page */
@@ -140,7 +143,7 @@ p {
     background: transparent !important;
 }
 .menu-main li a {
-    color: #fff;
+    color: #fff !important;
     text-transform: uppercase;
     margin: 15px;
     padding: 0;
@@ -175,6 +178,8 @@ p {
   transform: scaleX(1);
 }
 
+
+
 .top-right-menu {
 
 }
@@ -184,9 +189,9 @@ p {
 }
 
 .big-bg {
-    background: url('/web/images/Get It Done Brand Hang Tag.png') center center no-repeat;
+    background: url('/web/images/Get-It-Done-Brand-Hang-Tag-30.png') center center no-repeat;
     background-size: cover;
-    height: 400px;
+    height: auto;
     border-top: 1px solid #9c9c9c;
 }
 
@@ -199,6 +204,12 @@ p {
 }
 .nav-pills>li>a, .nav-pills>li>a:focus, .nav-pills>li>a:hover {
     background-color: transparent;
+}
+.navbar-brand-override {
+    padding: 7px 0 7px 15px;
+}
+.navbar-brand-override img {
+    height: 100%;
 }
 
 /* LOGO */

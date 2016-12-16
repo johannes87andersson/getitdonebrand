@@ -4,11 +4,11 @@
         <meta charset="UTF-8">
         <title>Get It Done</title>
         <!-- save no cache -->
-        <meta http-equiv="cache-control" content="max-age=0" />
+<!--        <meta http-equiv="cache-control" content="max-age=0" />
         <meta http-equiv="cache-control" content="no-cache" />
         <meta http-equiv="expires" content="0" />
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-        <meta http-equiv="pragma" content="no-cache" />
+        <meta http-equiv="pragma" content="no-cache" />-->
         <!-- save no cache -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="<?php echo $page["page_desc"] ?>">
@@ -43,6 +43,9 @@
                 -webkit-transform: scaleX(1);
                 transform: scaleX(1);
             }
+            .menu-main li a {
+                color: #000 !important;
+            }
         </style>
     </head>
     <?php flush(); ?>
@@ -50,31 +53,7 @@
         <div class="test">
             <!-- needed for background image -->
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2" style="padding-left: 0;">
-                    <ul class="nav nav-pills pull-left">
-                        <li role="presentation" class="">
-                            <a href="/">
-                                <img src="/web/images/Get it done logotyp small.png">
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-md-10">
-                    <ul class="nav nav-pills pull-right menu-main">
-                        <li role="presentation" class=""><a style="color: black;" href="/common/products">Store</a></li>
-                        <li role="presentation" class=""><a style="color: black;" href="/common/about">About</a></li>
-                        <li role="presentation" class=""><a style="color: black;" href="/common/contact">Contact</a></li>
-                        <li><a target="_blank" href="https://www.facebook.com/getitdonebrand/?fref=ts"><img class="menu-icons" src="/web/images/facebook.svg" /></a></li>
-                        <li><a target="_blank" href="https://www.instagram.com/getitdonebrand/"><img class="menu-icons" src="/web/images/instagram.svg" /></a></li>
-                        <!--<li><a href="#"><img class="menu-icons" src="/web/images/snapchat.svg" /></a></li>-->
-                        <li class="hide-me"><a href="#"><img class="menu-icons" src="/web/images/sv.png" /></a></li>
-                        <li class="hide-me"><a href="#"><img class="menu-icons" src="/web/images/en.png" /></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <?php require_once('menu.php'); ?>
         <div class="clearfix"></div>
 
         <div class="container">
@@ -104,8 +83,3 @@
                 <div class="clearfix"></div>
             </div>
         </div>
-        <?php
-        echo '<pre>';
-        print_r($_SERVER);
-        echo '</pre>';
-        ?>

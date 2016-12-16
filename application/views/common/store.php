@@ -20,7 +20,7 @@
         transform: scaleX(1);
     }
     .menu-main li a {
-        color: #000;
+        color: #000 !important;
     }
 </style>
 <div class="container" style="position: relative;">
@@ -31,8 +31,9 @@
 
                     <img class="img img-thumbnail thumb" src="/web/uploads/thumbnail/<?php echo $prod_img[$i]["filename"] ?>" />
                     <?php
-                }
-            } else {
+                }?>
+                    <div class="clearfix"></div>
+            <?php } else {
                 ?>
 
             <?php } ?>
@@ -45,7 +46,8 @@
                 Seems there´s no uploaded images yet
             <?php } ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 text-center">
+            
             <?php echo $product["shopify_link"]; ?>
         </div>
         <div class="clearfix"></div>

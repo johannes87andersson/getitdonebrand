@@ -8,6 +8,7 @@
         bottom: 0;
         left: 0;
         background-color: #000;
+        color: #000;
         visibility: hidden;
         -webkit-transform: scaleX(0);
         transform: scaleX(0);
@@ -20,8 +21,9 @@
         transform: scaleX(1);
     }
     .menu-main li a {
-        color: #000;
+        color: #000 !important;
     }
+    
 </style>
 <div class="container" style="position: relative;">
     <div class="row">
@@ -32,7 +34,7 @@
                     ?>
                     <div class="product">
                         <a href="/common/store/<?php echo str_replace(array(" "), array("-"), strtolower($val["prod_name"])); ?>">
-                            <img class="hover-product img-thumbnail img-responsive" src="/web/uploads/thumbnail/small/<?php echo $val["filename"] ?>" alt="No images to show" />
+                            <img class="hover-product img-thumbnail" src="/web/uploads/thumbnail/medium/<?php echo $val["filename"] ?>" alt="No images to show" />
                         </a>
                         <div class="text lead product-text"><?php echo $val["prod_name"]; ?></div>
                     </div>
